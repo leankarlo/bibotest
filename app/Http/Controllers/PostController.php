@@ -81,7 +81,7 @@ class PostController extends Controller {
 	 */
 	public function show($slug)
 	{
-		$post = Posts::where('slug',$slug)->first();
+		$post = Blogs::where('slug',$slug)->first();
 
 		if($post)
 		{
@@ -104,7 +104,7 @@ class PostController extends Controller {
 	 */
 	public function edit(Request $request,$slug)
 	{
-		$post = Posts::where('slug',$slug)->first();
+		$post = Blogs::where('slug',$slug)->first();
 		if($post && ($request->user()->id == $post->user_id || $request->user()->is_admin()))
 			return view('posts.edit')->with('post',$post);
 		else 
@@ -123,12 +123,12 @@ class PostController extends Controller {
 	{
 		//
 		$post_id = $request->input('post_id');
-		$post = Posts::find($post_id);
+		$post = Blogs::find($post_id);
 		if($post && ($post->user_id == $request->user()->id || $request->user()->is_admin()))
 		{
 			$title = $request->input('title');
 			$slug = str_slug($title);
-			$duplicate = Posts::where('slug',$slug)->first();
+			$duplicate = Blogs::where('slug',$slug)->first();
 			if($duplicate)
 			{
 				if($duplicate->id != $post_id)
@@ -173,7 +173,7 @@ class PostController extends Controller {
 	public function destroy(Request $request, $id)
 	{
 		//
-		$post = Posts::find($id);
+		$post = Blogs::find($id);
 		if($post && ($post->author_id == $request->user()->id || $request->user()->is_admin()))
 		{
 			$post->delete();
