@@ -62,8 +62,8 @@ class PostController extends Controller {
 			return response()->json(array('status_code' => 400, 'message' => $validator->messages(), 'body' => array('result' => false)));
 		}
 
-		$userModel = User::where('email_address', $request->input('email_address'))->first();
-		if ($userModel == null) {
+		$userModel = User::where('email', $request->input('email_address'))->first();
+		if ( $userModel->isEmpty() ) {
 			return response()->json(array('status_code' => 400, 'message' => 'invalid user', 'body' => array('result' => false) ));
 		}
 
@@ -111,8 +111,8 @@ class PostController extends Controller {
 			return response()->json(array('status_code' => 400, 'message' => 'Titlt or Content or Slug must exist.', 'body' => array('result' => false)));
 		}
 
-		$userModel = User::where('email_address', $request->input('email_address'))->first();
-		if ($userModel == null) {
+		$userModel = User::where('email', $request->input('email_address'))->first();
+		if ($userModel->isEmpty() ) {
 			return response()->json(array('status_code' => 400,'message' => 'invalid user'), 'body' => array('result' => false));
 		}
 
@@ -151,7 +151,7 @@ class PostController extends Controller {
 		}
 
 		$userModel = User::where('email_address', $request->input('email_address'))->first();
-		if ($userModel == null) {
+		if ( $userModel->isEmpty() ) {
 			return response()->json(array('status_code' => 400, 'message' => 'invalid user', 'body' => array('result' => false) ));
 		}
 		
