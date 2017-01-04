@@ -59,12 +59,12 @@ class PostController extends Controller {
 		]);
 
 		if ($validator->fails()) {
-			return response()->json(array('status_code' => 400, 'message' => $validator->messages()));
+			return response()->json(array('status_code' => 400, 'message' => $validator->messages(), 'body' => array('result' => false)));
 		}
 
 		$userModel = User::where('email_address', $request->input('email_address'))->first();
 		if ($userModel == null) {
-			return response()->json(array('result' => false, 'message' => 'invalid user'));
+			return response()->json(array('status_code' => 400, 'message' => 'invalid user', 'body' => array('result' => false) ));
 		}
 
 		$user_id = $userModel->id;
@@ -78,8 +78,10 @@ class PostController extends Controller {
 
 		return Response::json(array(
 			'status_code' => 200,
-			'result' => true,
-			'blog_id' => $model->id 
+			'message' => 'Success',
+			'body' => array(
+				'result' => true,
+				'blog_id' => $model->id) 
 			));
 	}
 
@@ -97,21 +99,21 @@ class PostController extends Controller {
 		]);
 
 		if ($blog_id) {
-			return response()->json(array('status_code' => 400,'result' => false, 'message' => $validator->messages()));
+			return response()->json(array('status_code' => 400,'message' => 'blog_id is required','body' => array('result' => false)  ));
 		}
 
 		if ($validator->fails()) {
-			return response()->json(array('status_code' => 400,'result' => false, 'message' => $validator->messages()));
+			return response()->json(array('status_code' => 400, 'message' => $validator->messages(), 'body' => array('result' => false) ));
 		}
 
 		if ( !isset($request->input('title')) || !isset($request->input('slug')) || !isset($request->input('content')) )
 		{
-			return response()->json(array('status_code' => 400,'result' => false, 'message' => 'Titlt or Content or Slug must exist.'));
+			return response()->json(array('status_code' => 400, 'message' => 'Titlt or Content or Slug must exist.', 'body' => array('result' => false)));
 		}
 
 		$userModel = User::where('email_address', $request->input('email_address'))->first();
 		if ($userModel == null) {
-			return response()->json(array('status_code' => 400,'result' => false, 'message' => 'invalid user'));
+			return response()->json(array('status_code' => 400,'message' => 'invalid user'), 'body' => array('result' => false));
 		}
 
 		$user_id = $userModel->id;
@@ -124,8 +126,8 @@ class PostController extends Controller {
 
 		return Response::json(array(
 			'status_code' => 200,
-			'result' => true,
-			'blog_id' => $model->id 
+			'message' => 'success',
+			'body' => array('result' => true, 'blog_id' => $model->id)
 			));
 
 	}
@@ -145,12 +147,12 @@ class PostController extends Controller {
 		]);
 
 		if ($validator->fails()) {
-			return response()->json(array('status_code' => 400,'result' => false, 'message' => $validator->messages()));
+			return response()->json(array('status_code' => 400, 'message' => $validator->messages(), 'body' => array('result' => false) ));
 		}
 
 		$userModel = User::where('email_address', $request->input('email_address'))->first();
 		if ($userModel == null) {
-			return response()->json(array('status_code' => 400,'result' => false, 'message' => 'invalid user'));
+			return response()->json(array('status_code' => 400, 'message' => 'invalid user', 'body' => array('result' => false) ));
 		}
 		
 		$model = Blogs::find($request->input('blog_id'));
@@ -158,7 +160,8 @@ class PostController extends Controller {
 
 		return Response::json(array(
 			'status_code' => 200,
-			'result' => true
+			'message' => 'success',
+			'body' => array('result' => true)
 			));
 	}
 }
